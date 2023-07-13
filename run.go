@@ -207,6 +207,11 @@ func (s *Stream) WithTimeout(timeOut time.Duration) *Stream {
 	return s
 }
 
+func (s *Stream) WithContext(ctx context.Context) *Stream {
+	s.Context = ctx
+	return s
+}
+
 func (s *Stream) OverWriteOutput() *Stream {
 	s.Context = context.WithValue(s.Context, "OverWriteOutput", struct{}{})
 	return s
@@ -268,7 +273,7 @@ func (s *Stream) Compile(options ...CompilationOption) *exec.Cmd {
 	for _, option := range GlobalCommandOptions {
 		option(cmd)
 	}
-  if LogCompiledCommand {
+	if LogCompiledCommand {
 		log.Printf("compiled command: ffmpeg %s\n", strings.Join(args, " "))
 	}
 	return cmd
